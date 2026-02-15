@@ -130,7 +130,7 @@ image_path = "image.jpg"
 print(f"\n[1/9] Loading image: {image_path}")
 
 if not os.path.exists(image_path):
-    print(f"❌ ERROR: Image file '{image_path}' not found!")
+    print(f"ERROR: Image file '{image_path}' not found!")
     print(f"   Current directory: {os.getcwd()}")
     sys.exit(1)
 
@@ -138,13 +138,13 @@ img = cv2.imread(image_path)
 if img is None:
     raise SystemExit("Failed to load 'image.jpg'")
 
-print(f"✅ Image loaded successfully")
+print(f"Image loaded successfully")
 print(f"   Dimensions: {img.shape[1]} x {img.shape[0]} pixels")
 
 # Step 5: Convert to grayscale (HOG can work with color, but grayscale is faster)
 print("\n[2/9] Converting to grayscale...")
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-print(f"✅ Converted to grayscale")
+print(f" Converted to grayscale")
 
 # Step 6: Resize image for optimal processing
 print("\n[3/9] Resizing image for optimal processing...")
@@ -153,9 +153,9 @@ scale = 800.0 / max(img.shape[:2])
 if scale < 1.0:
     img = cv2.resize(img, (int(img.shape[1] * scale), int(img.shape[0] * scale)))
     gray = cv2.resize(gray, (int(gray.shape[1] * scale), int(gray.shape[0] * scale)))
-    print(f"✅ Resized from {original_shape[1]}x{original_shape[0]} to {img.shape[1]}x{img.shape[0]}")
+    print(f" Resized from {original_shape[1]}x{original_shape[0]} to {img.shape[1]}x{img.shape[0]}")
 else:
-    print(f"✅ No resizing needed (image already optimal size)")
+    print(f" No resizing needed (image already optimal size)")
 
 # Step 7: Check if dlib is available, if not, use OpenCV's HOG
 print("\n[4/9] Initializing HOG face detector...")
@@ -167,11 +167,11 @@ try:
     # Initialize dlib's HOG-based face detector
     hog_face_detector = dlib.get_frontal_face_detector()
     use_dlib = True
-    print("✅ Using dlib's HOG face detector")
+    print("Using dlib's HOG face detector")
     print("   Method: HOG (Histogram of Oriented Gradients) + Linear SVM")
     
 except ImportError:
-    print("   ⚠️  dlib not available, using alternative method...")
+    print("    dlib not available, using alternative method...")
     print("   Installing dlib for better HOG face detection...")
     print("\n   To install dlib, run:")
     print("   pip3 install dlib --break-system-packages")
@@ -193,20 +193,20 @@ except ImportError:
             if not os.path.exists(prototxt_path):
                 prototxt_url = "https://raw.githubusercontent.com/opencv/opencv/master/samples/dnn/face_detector/deploy.prototxt"
                 urllib.request.urlretrieve(prototxt_url, prototxt_path)
-                print(f"   ✅ Downloaded {prototxt_path}")
+                print(f"   Downloaded {prototxt_path}")
             
             if not os.path.exists(model_path):
                 model_url = "https://raw.githubusercontent.com/opencv/opencv_3rdparty/dnn_samples_face_detector_20170830/res10_300x300_ssd_iter_140000.caffemodel"
                 urllib.request.urlretrieve(model_url, model_path)
-                print(f"   ✅ Downloaded {model_path}")
+                print(f"   Downloaded {model_path}")
         
         net = cv2.dnn.readNetFromCaffe(prototxt_path, model_path)
-        print("✅ Using OpenCV DNN face detector (alternative to HOG)")
+        print(" Using OpenCV DNN face detector (alternative to HOG)")
         print("   Method: Deep Neural Network (more accurate than HOG)")
         use_dnn = True
         
     except Exception as e:
-        print(f"   ❌ Could not initialize face detector: {e}")
+        print(f"    Could not initialize face detector: {e}")
         print("\n   Please install dlib:")
         print("   sudo apt-get install -y python3-dev")
         print("   pip3 install dlib --break-system-packages")
@@ -255,7 +255,7 @@ else:
 
 detection_time = time.time() - start_time
 
-print(f"✅ Detection complete in {detection_time:.3f} seconds")
+print(f"Detection complete in {detection_time:.3f} seconds")
 print(f"   Method used: {detection_method}")
 print(f"   Detected {len(faces)} face(s)")
 
@@ -275,11 +275,11 @@ for (x, y, w, h) in faces:
     cv2.rectangle(img, (x, y), (x + w, y + h), box_color, box_thickness)
 
 if len(faces) > 0:
-    print(f"✅ Drew {len(faces)} bounding box(es) in BLUE")
+    print(f"Drew {len(faces)} bounding box(es) in BLUE")
     print(f"   Note: Blue boxes = HOG/DNN detection")
     print(f"         Green boxes (Task 1) = Haar Cascade detection")
 else:
-    print("⚠️  No faces detected to draw")
+    print(" No faces detected to draw")
 
 # Step 10: Add text label showing detection method
 print(f"\n[7/9] Adding detection method label...")
@@ -290,13 +290,13 @@ cv2.putText(img, f"Faces: {len(faces)}", (10, 60),
             font, 0.7, (255, 0, 0), 2)
 cv2.putText(img, f"Time: {detection_time:.3f}s", (10, 90), 
             font, 0.7, (255, 0, 0), 2)
-print(f"✅ Labels added to image")
+print(f" Labels added to image")
 
 # Step 11: Save output image
 output_path = "task3_face_detected_hog.jpg"
 print(f"\n[8/9] Saving result to: {output_path}")
 cv2.imwrite(output_path, img)
-print(f"✅ Output saved successfully")
+print(f" Output saved successfully")
 
 # Print detection summary with comparison
 print("\n" + "=" * 72)
@@ -341,10 +341,10 @@ print(formatted_gpu_stats)
 print("\n" + "=" * 72)
 print(" " * 27 + "COMPLETE!")
 print("=" * 72)
-print(f"✅ Detected {len(faces)} face(s) using {detection_method}")
-print(f"✅ Detection time: {detection_time:.3f} seconds")
-print(f"✅ Output saved to: {output_path}")
-print(f"✅ System monitoring complete")
+print(f" Detected {len(faces)} face(s) using {detection_method}")
+print(f" Detection time: {detection_time:.3f} seconds")
+print(f" Output saved to: {output_path}")
+print(f"System monitoring complete")
 print("=" * 72)
 print("\nNEXT STEPS:")
 print("  1. Compare output images:")
@@ -353,5 +353,6 @@ print(f"     - Task 3: {output_path} (BLUE boxes = HOG/DNN)")
 print("  2. Compare detection times and accuracy")
 print("  3. Notice differences in bounding box precision")
 print("=" * 72)
+
 
 cv2.destroyAllWindows()
