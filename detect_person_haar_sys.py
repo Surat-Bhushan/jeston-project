@@ -153,7 +153,7 @@ image_path = "image.jpg"
 print(f"\n[1/8] Loading image: {image_path}")
 
 if not os.path.exists(image_path):
-    print(f"❌ ERROR: Image file '{image_path}' not found!")
+    print(f" ERROR: Image file '{image_path}' not found!")
     print(f"   Current directory: {os.getcwd()}")
     print(f"   Files in directory: {os.listdir('.')}")
     sys.exit(1)
@@ -162,13 +162,13 @@ img = cv2.imread(image_path)
 if img is None:
     raise SystemExit("Failed to load 'image.jpg' — make sure file exists in the script folder.")
 
-print(f"✅ Image loaded successfully")
+print(f" Image loaded successfully")
 print(f"   Dimensions: {img.shape[1]} x {img.shape[0]} pixels")
 
 # Step 5: Convert image to grayscale using cv2.cvtColor() as Haar Cascade works better on grayscale images
 print("\n[2/8] Converting to grayscale...")
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-print(f"✅ Converted to grayscale")
+print(f" Converted to grayscale")
 
 # Step 6: Resize image for faster processing (optional but improves performance)
 print("\n[3/8] Resizing image for optimal processing...")
@@ -177,16 +177,16 @@ scale = 800.0 / max(img.shape[:2])
 if scale < 1.0:
     img = cv2.resize(img, (int(img.shape[1] * scale), int(img.shape[0] * scale)))
     gray = cv2.resize(gray, (int(gray.shape[1] * scale), int(gray.shape[0] * scale)))
-    print(f"✅ Resized from {original_shape[1]}x{original_shape[0]} to {img.shape[1]}x{img.shape[0]}")
+    print(f"Resized from {original_shape[1]}x{original_shape[0]} to {img.shape[1]}x{img.shape[0]}")
 else:
-    print(f"✅ No resizing needed (image already optimal size)")
+    print(f"No resizing needed (image already optimal size)")
 
 # Step 7: Load pre-trained Haar Cascade classifier for face detection using cv2.CascadeClassifier() with XML file path
 cascade_path = "haarcascade_frontalface_default.xml"
 print(f"\n[4/8] Loading Haar Cascade: {cascade_path}")
 
 if not os.path.exists(cascade_path):
-    print(f"❌ ERROR: Cascade file '{cascade_path}' not found!")
+    print(f" ERROR: Cascade file '{cascade_path}' not found!")
     print(f"   Current directory: {os.getcwd()}")
     print(f"   Files in directory: {os.listdir('.')}")
     print("\n   Make sure the cascade file is in the same directory as this script.")
@@ -196,7 +196,7 @@ face_cascade = cv2.CascadeClassifier(cascade_path)
 if face_cascade.empty():
     raise SystemExit(f"Failed to load cascade at {cascade_path}")
 
-print(f"✅ Cascade loaded successfully")
+print(f" Cascade loaded successfully")
 
 # Step 8: Detect faces using detectMultiScale() with scaleFactor for pyramid scaling, minNeighbors for detection quality
 print("\n[5/8] Detecting faces...")
@@ -209,7 +209,7 @@ faces = face_cascade.detectMultiScale(
 )
 detection_time = time.time() - start_time
 
-print(f"✅ Detection complete in {detection_time:.3f} seconds")
+print(f" Detection complete in {detection_time:.3f} seconds")
 print(f"   Detected {len(faces)} face(s)")
 
 if len(faces) > 0:
@@ -222,15 +222,15 @@ for (x, y, w, h) in faces:
     cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
 if len(faces) > 0:
-    print(f"✅ Drew {len(faces)} bounding box(es)")
+    print(f" Drew {len(faces)} bounding box(es)")
 else:
-    print("⚠️  No faces detected to draw")
+    print("  No faces detected to draw")
 
 # Step 10: Save output image to disk using cv2.imwrite()
 output_path = "task2_face_detected.jpg"
 print(f"\n[7/8] Saving result to: {output_path}")
 cv2.imwrite(output_path, img)
-print(f"✅ Output saved successfully")
+print(f" Output saved successfully")
 
 print(f"\nDetected {len(faces)} face(s). Output saved to {output_path}")
 
@@ -255,12 +255,13 @@ print(formatted_gpu_stats)
 print("\n" + "=" * 72)
 print(" " * 27 + "COMPLETE!")
 print("=" * 72)
-print(f"✅ Detected {len(faces)} face(s)")
-print(f"✅ Output saved to: {output_path}")
-print(f"✅ System monitoring complete")
+print(f" Detected {len(faces)} face(s)")
+print(f" Output saved to: {output_path}")
+print(f" System monitoring complete")
 print("=" * 72)
 
 # Step 14: Display result (commented out for headless systems)
 # cv2.imshow("Face Detection with Monitoring", img)
 # cv2.waitKey(0)
+
 cv2.destroyAllWindows()
